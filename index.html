@@ -5,51 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เกมคณิตศาสตร์</title>
     <style>
-        h1{
+        h1 {
             text-align: center;
         }
-        .content{
+        .content {
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        *{
-            margin: 10px;
-        }
-        .operator{
+        .operator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background-color: aqua;
             border-radius: 12px;
             padding: 12px;
         }
-        #leftBox{
+        .box {
             background-color: aqua;
             border-radius: 12px;
             padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #rightBox{
-            background-color: aqua;
-            border-radius: 12px;
-            padding: 12px;
+        .answer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .check {
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div><h1>เกมคณิตศาสตร์</h1></div>
-    <h2 id="point"></h2>
+    <h2 id="point">คะแนน 0/0</h2>
     <div class="content">
         <div class="box">
             <p id="leftBox"></p>
         </div>
         <div class="operator">
-            <input type="radio" name="operation" id="positive">+
-            <input type="radio" name="operation" id="negative">-
-            <input type="radio" name="operation" id="multipli">x
-            <input type="radio" name="operation" id="divide">/
+            <label><input type="radio" name="operation" id="positive">+</label>
+            <label><input type="radio" name="operation" id="negative">-</label>
+            <label><input type="radio" name="operation" id="multipli">x</label>
+            <label><input type="radio" name="operation" id="divide">/</label>
         </div>
         <div class="box">
             <p id="rightBox"></p>
         </div>
-        <div class="answer"><input type="number" id="answer"></div>
-        <div class="check"><p id="check"></p></div>
-        <button id="submit">ตอบ!!!</button>
+        <div class="answer">
+            <input type="number" id="answer">
+            <button id="submit">ตอบ!!!</button>
+            <button id="clearpoint">เริ่มใหม่</button>
+        </div>
+    </div>
+    <div class="check">
+        <p id="check"></p>
     </div>
     <script>
         const leftBox = document.getElementById('leftBox');
@@ -62,43 +77,59 @@
         const multipli = document.getElementById('multipli');
         const divide = document.getElementById('divide');
         const point = document.getElementById('point');
-        
-        let answer, leftnumber, rightnumber,count=0;
-        point.textContent ='คะแนน '+ count+'/20';
+        const clearpoint = document.getElementById('clearpoint');
+        let answer, leftnumber, rightnumber, count1 = 0, count2 = 0;
+        point.textContent = 'คะแนน ' + count1 + '/' + count2;
         function randomnumber() {
-            leftnumber = Math.floor(Math.random() * 100 + 1);
-            rightnumber = Math.floor(Math.random() * 100 + 1);
+            leftnumber = Math.floor(Math.random() * 10) + 1;
+            rightnumber = Math.floor(Math.random() * 10) + 1;
             leftBox.textContent = leftnumber;
             rightBox.textContent = rightnumber;
         }
+
         randomnumber();
-        while(leftnumber <= rightnumber){
+        while (leftnumber <= rightnumber) {
             randomnumber();
         }
+
+        clearpoint.addEventListener('click', () => {
+            count1 = 0;
+            point.textContent = 'คะแนน ' + count1 + '/' + count2;
+        });
+
         submitButton.addEventListener('click', () => {
             if (positive.checked) {
                 answer = leftnumber + rightnumber;
+                check.textContent = leftnumber + '+' + rightnumber + '=' + answer + ' เป็นคำตอบถูกต้อง!';
             } else if (negative.checked) {
                 answer = leftnumber - rightnumber;
+                check.textContent = leftnumber + '-' + rightnumber + '=' + answer + ' เป็นคำตอบถูกต้อง!';
             } else if (multipli.checked) {
                 answer = leftnumber * rightnumber;
+                check.textContent = leftnumber + 'x' + rightnumber + '=' + answer + ' เป็นคำตอบถูกต้อง!';
             } else if (divide.checked) {
                 answer = leftnumber / rightnumber;
+                check.textContent = leftnumber + '/' + rightnumber + '=' + answer + ' เป็นคำตอบถูกต้อง!';
             }
-            
+
             if (parseInt(answerElement.value) === answer) {
-                ++count
-                point.textContent ='คะแนน '+ count+'/20';
-                check.textContent =leftnumber+'+'+rightnumber +'='+ answer + ' เป็นคำตอบถูกต้อง!';
+                if(count1 === count2){
+                ++count1
+                ++count2
+                }
+                else{
+                ++count1
+                }
+                point.textContent = 'คะแนน ' + count1 + '/' + count2;
             } else {
-                point.textContent ='คะแนน '+ count+'/20';
+                point.textContent = 'คะแนน ' + count1 + '/' + count2;
                 check.textContent = 'คำตอบผิด! ลองอีกครั้ง';
             }
             answerElement.value = null;
             randomnumber();
-            while(leftnumber <= rightnumber){
-            randomnumber();
-        } // Call randomnumber() after checking the answer
+            while (leftnumber <= rightnumber) {
+                randomnumber();
+            }
         });
     </script>
 </body>
