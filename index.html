@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมคณิตศาสตร์</title>
+    <style>
+        h1{
+            text-align: center;
+        }
+        .content{
+            display: flex;
+        }
+        *{
+            margin: 10px;
+        }
+        .operator{
+            background-color: aqua;
+            border-radius: 12px;
+            padding: 12px;
+        }
+        #leftBox{
+            background-color: aqua;
+            border-radius: 12px;
+            padding: 12px;
+        }
+        #rightBox{
+            background-color: aqua;
+            border-radius: 12px;
+            padding: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div><h1>เกมคณิตศาสตร์</h1></div>
+    <h2 id="point"></h2>
+    <div class="content">
+        <div class="box">
+            <p id="leftBox"></p>
+        </div>
+        <div class="operator">
+            <input type="radio" name="operation" id="positive">+
+            <input type="radio" name="operation" id="negative">-
+            <input type="radio" name="operation" id="multipli">x
+            <input type="radio" name="operation" id="divide">/
+        </div>
+        <div class="box">
+            <p id="rightBox"></p>
+        </div>
+        <div class="answer"><input type="number" id="answer"></div>
+        <div class="check"><p id="check"></p></div>
+        <button id="submit">ตอบ!!!</button>
+    </div>
+    <script>
+        const leftBox = document.getElementById('leftBox');
+        const rightBox = document.getElementById('rightBox');
+        const answerElement = document.getElementById('answer');
+        const submitButton = document.getElementById('submit');
+        const check = document.getElementById('check');
+        const positive = document.getElementById('positive');
+        const negative = document.getElementById('negative');
+        const multipli = document.getElementById('multipli');
+        const divide = document.getElementById('divide');
+        const point = document.getElementById('point');
+        
+        let answer, leftnumber, rightnumber,count=0;
+        point.textContent ='คะแนน '+ count+'/20';
+        function randomnumber() {
+            leftnumber = Math.floor(Math.random() * 100 + 1);
+            rightnumber = Math.floor(Math.random() * 100 + 1);
+            leftBox.textContent = leftnumber;
+            rightBox.textContent = rightnumber;
+        }
+        randomnumber();
+        while(leftnumber <= rightnumber){
+            randomnumber();
+        }
+        submitButton.addEventListener('click', () => {
+            if (positive.checked) {
+                answer = leftnumber + rightnumber;
+            } else if (negative.checked) {
+                answer = leftnumber - rightnumber;
+            } else if (multipli.checked) {
+                answer = leftnumber * rightnumber;
+            } else if (divide.checked) {
+                answer = leftnumber / rightnumber;
+            }
+            
+            if (parseInt(answerElement.value) === answer) {
+                ++count
+                point.textContent ='คะแนน '+ count+'/20';
+                check.textContent =leftnumber+'+'+rightnumber +'='+ answer + ' เป็นคำตอบถูกต้อง!';
+            } else {
+                point.textContent ='คะแนน '+ count+'/20';
+                check.textContent = 'คำตอบผิด! ลองอีกครั้ง';
+            }
+            answerElement.value = null;
+            randomnumber();
+            while(leftnumber <= rightnumber){
+            randomnumber();
+        } // Call randomnumber() after checking the answer
+        });
+    </script>
+</body>
+</html>
